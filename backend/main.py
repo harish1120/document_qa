@@ -1,15 +1,23 @@
 from schemas import AskRequest, AskResponse
 from rag import answer_question
 from ingest import ingest_pdf
+from contextlib import asynccontextmanager
 from pathlib import Path
+from prometheus_client import REGISTRY
 from fastapi import FastAPI, UploadFile, File, HTTPException, status
+from prometheus_fastapi_instrumentator import Instrumentator
 from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
 
+# Configure Instrumentator after creating the app
+instrumentator = Instrumentator()
+instrumentator.instrument(app).expose(app)
+
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
 
 @app.get("/health")
 def health():
@@ -17,6 +25,7 @@ def health():
         "status": "ok",
         "service": "rag-backend"
     }
+
 
 @app.post("/upload_pdf")
 async def upload_pdf(file: UploadFile = File(...)):
@@ -45,3 +54,16 @@ def ask_question(req: AskRequest):
     except RuntimeError as e:
         raise HTTPException(
             status_code=status.HTTP_408_REQUEST_TIMEOUT, detail=str(e))
+
+
+@app.get("/metrics-json")
+async def metrics_json():
+    """Simple JSON view of metrics for debugging"""
+    metrics = {}
+    for metric in REGISTRY.collect():
+        for sample in metric.samples:
+            metrics[sample.name] = {
+                "value": sample.value,
+                "labels": sample.labels
+            }
+    return metrics
