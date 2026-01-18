@@ -3,6 +3,7 @@ WORKDIR /usr/src/app
 RUN apt-get update && apt-get install -y \
     build-essential \
     poppler-utils \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy dependency files first (better Docker caching)
