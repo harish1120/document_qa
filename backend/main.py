@@ -1,6 +1,6 @@
-from schemas import AskRequest, AskResponse
-from rag import answer_question
-from ingest import ingest_pdf
+from .schemas import AskRequest, AskResponse
+from .rag import answer_question
+from .ingest import ingest_pdf
 from pathlib import Path
 from fastapi import FastAPI, UploadFile, File, HTTPException, status
 from dotenv import load_dotenv
@@ -11,12 +11,6 @@ app = FastAPI()
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-@app.get("/health")
-def health():
-    return {
-        "status": "ok",
-        "service": "rag-backend"
-    }
 
 @app.post("/upload_pdf")
 async def upload_pdf(file: UploadFile = File(...)):

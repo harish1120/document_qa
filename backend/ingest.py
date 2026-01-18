@@ -4,6 +4,8 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from pathlib import Path
 import pickle
+from dotenv import load_dotenv
+load_dotenv()
 
 VECTOR_DIR = "vectorstore"
 
