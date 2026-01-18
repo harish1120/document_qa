@@ -5,9 +5,6 @@ from langchain_core.prompts import PromptTemplate
 from rank_bm25 import BM25Okapi
 import pickle
 import numpy as np
-from dotenv import load_dotenv
-
-load_dotenv()
 
 VECTOR_DIR = "vectorstore"
 

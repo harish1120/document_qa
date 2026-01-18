@@ -1,10 +1,12 @@
 import streamlit as st
 import requests
 
-BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "http://backend:8000"
 TIMEOUT = 60
 
 st.title("📄 PDF Question Answering (RAG)")
+
+st.markdown("<!-- healthcheck -->", unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Upload PDF", type=["pdf"])
 
