@@ -72,7 +72,7 @@
 ### 1. Clone & Setup
 
 ```bash
-git clone <your-repo-url>
+git clone [https://github.com/harish1120/document_qa.git]
 cd document_qa
 ```
 
